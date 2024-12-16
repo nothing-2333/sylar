@@ -94,4 +94,53 @@ void StdoutLogAppender::log(LogLevel::Level level, LogEvent::ptr event)
     }
 }
 
+
+LogFormatter::LogFormatter(const std::string& pattern)
+{
+    im_pattern(pattern);
+}
+
+std::string LogFormatter::format(LogEvent::ptr event)
+{
+    std::stringstream ss;
+    for (auto& i : m_items)
+    {
+        i->format(ss, event);
+    }
+    return ss.str();
+}
+
+void LogFormatter::init()
+{
+    // str, format, type
+    std::vector<std::tuple<std::string, std::string, int>> vec;
+
+    std::string str;
+    for (size_t i = 0; i < m_pattern.size(); ++i)
+    {
+        if (m_pattern[i] != '%')
+        {
+            str.append(1, m_pattern[i]);
+            continue;
+        }
+        size_t n = i + 1;
+        int fmt_status = 0;
+
+        std::string str;
+        std::string fmt;
+        while (n < m_pattern.size())
+        {
+            if (isspace(m_pattern[n])) break;
+            if (fmt_status == 0)
+            {
+                if (m_pattern[n] == '(')
+                {
+
+                }
+            }
+            
+        }
+    }
+}
+
 }
